@@ -20,5 +20,16 @@ for file in files:
     
 all_months_data.to_csv("./Sales_Data/data.csv", index=False)
 data = pd.read_csv("./Sales_Data/data.csv")
-print(data.head())
-print(data.tail())
+
+data = data[data["Order Date"].str[0:2] !='Or']
+data = data.dropna(how='all')
+data["Month"]=data["Order Date"].str[0:2]
+data["Month"]=data["Month"].astype('int32')
+
+'''
+nan_data = data[data.isna().any(axis=1)]
+print(nan_data.head())
+'''
+
+
+print(data.head)
