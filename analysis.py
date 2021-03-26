@@ -8,6 +8,7 @@ Created on Fri Mar 26 14:55:58 2021
 
 import pandas as pd
 import os
+import matplotlib.pyplot as plt
 
 
 files = [file for file in os.listdir("./Sales_Data/")]
@@ -23,13 +24,21 @@ data = pd.read_csv("./Sales_Data/data.csv")
 
 data = data[data["Order Date"].str[0:2] !='Or']
 data = data.dropna(how='all')
-data["Month"]=data["Order Date"].str[0:2]
-data["Month"]=data["Month"].astype('int32')
+data["Month"] = data["Order Date"].str[0:2]
+data["Month"] = data["Month"].astype('int32')
+data["Quantity Ordered"] = pd.to_numeric(data["Quantity Ordered"])
+data["Price Each"] = pd.to_numeric(data["Price Each"])
 
 '''
 nan_data = data[data.isna().any(axis=1)]
 print(nan_data.head())
 '''
 
+#highest and lowest sales in the month
 
-print(data.head)
+data["Sales"] = data["Quantity Ordered"] * data["Price Each"]
+sales_month = data.groupby('Month').sum()["Sales"]
+month = range(1,13)
+plt.bar(month,sales_month)
+plt.show()
+
