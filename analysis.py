@@ -20,11 +20,11 @@ for file in files:
     all_months_data = pd.concat([all_months_data, month_data])
     
 all_months_data.to_csv("./Sales_Data/data.csv", index=False)
-
 '''
 
 
-data = pd.read_csv("./Sales_Data/data.csv")
+
+data = pd.read_csv("../data.csv")
 
 data = data[data["Order Date"].str[0:2] !='Or']
 data = data.dropna(how='all')
@@ -44,5 +44,21 @@ data["Sales"] = data["Quantity Ordered"] * data["Price Each"]
 sales_month = data.groupby('Month').sum()["Sales"]
 month = range(1,13)
 plt.bar(month,sales_month)
+plt.xticks(month,rotation='vertical',size=8)
+plt.xlabel("Month")
+plt.ylabel("Sales in USD $")
 plt.show()
 
+
+#City which had highest number of sales
+
+data["City"]=data["Purchase Address"].apply(lambda x: x.split(",")[1]+" "+x.split(",")[2].split(" ")[1])
+sales_cities = data.groupby('City').sum()
+cities= [city for city ,_ in data.groupby("City")]
+plt.bar(cities,sales_cities["Sales"])
+plt.xticks(cities,rotation='vertical',size=8)
+plt.xlabel("Cities")
+plt.ylabel("Sales in USD $")
+plt.show()
+
+print(sales_cities)
