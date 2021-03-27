@@ -61,4 +61,19 @@ plt.xlabel("Cities")
 plt.ylabel("Sales in USD $")
 plt.show()
 
-print(sales_cities)
+
+#When to advertise
+
+data["Order Date"] = pd.to_datetime(data["Order Date"])
+data["Hour"] = data["Order Date"].dt.hour
+data["Minute"] = data["Order Date"].dt.minute
+hours = [hour for hour, _ in data.groupby('Hour')]
+plt.plot(hours,data.groupby(['Hour']).count())
+plt.xticks(hours)
+plt.grid()
+plt.xlabel("Hour")
+plt.ylabel("Sales count")
+plt.show()
+print(data.head())
+
+
