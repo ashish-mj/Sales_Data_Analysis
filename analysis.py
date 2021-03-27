@@ -10,7 +10,7 @@ import pandas as pd
 import os
 import matplotlib.pyplot as plt
 
-
+'''
 files = [file for file in os.listdir("./Sales_Data/")]
 all_months_data = pd.DataFrame()
 
@@ -20,6 +20,10 @@ for file in files:
     all_months_data = pd.concat([all_months_data, month_data])
     
 all_months_data.to_csv("./Sales_Data/data.csv", index=False)
+
+'''
+
+
 data = pd.read_csv("./Sales_Data/data.csv")
 
 data = data[data["Order Date"].str[0:2] !='Or']
