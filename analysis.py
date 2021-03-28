@@ -94,6 +94,25 @@ for key,value in count.most_common(10):
     print(key,value)
 
 
+#product sold the most
+    
+product_group = data.groupby("Product")
+quantity_order = product_group.sum()["Quantity Ordered"]
+prices = data.groupby("Product").mean()["Price Each"]
+
+print(prices.head())
+products = [product for product, _ in product_group ]
+
+fig, ax1 = plt.subplots()
+
+ax2 = ax1.twinx()
+ax1.bar(products,quantity_order,color='g')
+ax2.plot(products, prices, 'b-')
+ax1.set_xlabel("Product")
+ax1.set_ylabel("Sales count", color='g')
+ax2.set_ylabel('Prices', color='b')
+ax1.set_xticklabels(products,rotation='vertical',size=8)
+plt.show()
 
 
 
