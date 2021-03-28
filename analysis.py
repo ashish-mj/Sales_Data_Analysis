@@ -9,6 +9,8 @@ Created on Fri Mar 26 14:55:58 2021
 import pandas as pd
 import os
 import matplotlib.pyplot as plt
+from itertools import combinations
+from collections import Counter
 
 '''
 files = [file for file in os.listdir("./Sales_Data/")]
@@ -54,6 +56,7 @@ plt.show()
 
 data["City"]=data["Purchase Address"].apply(lambda x: x.split(",")[1]+" "+x.split(",")[2].split(" ")[1])
 sales_cities = data.groupby('City').sum()
+print(sales_cities.head())
 cities= [city for city ,_ in data.groupby("City")]
 plt.bar(cities,sales_cities["Sales"])
 plt.xticks(cities,rotation='vertical',size=8)
@@ -74,6 +77,23 @@ plt.grid()
 plt.xlabel("Hour")
 plt.ylabel("Sales count")
 plt.show()
-print(data.head())
+
+
+#products often brought together
+
+products = data[data["Order ID"].duplicated(keep=False)]
+products["Grouped"] = products.groupby("Order ID")["Product"].transform(lambda x : ",".join(x))
+products = products[["Order ID","Grouped"]].drop_duplicates()
+
+count=Counter()
+for row in products["Grouped"]:
+    row_list = row.split(",")
+    count.update(Counter(combinations(row_list,3)))
+    
+for key,value in count.most_common(10):
+    print(key,value)
+
+
+
 
 
